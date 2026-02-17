@@ -23,7 +23,7 @@ vim.diagnostic.config({
   update_in_insert = false, 
   severity_sort = true,     
   float = {
-    focused = true,
+    focused = false,
     style = "minimal",
     border = "rounded",
     source = "always",      
@@ -45,7 +45,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
   buffer = bufnr,
   callback = function()
     local opts = {
-      focusable = true,
+      focusable = false,
       close_events = { "CursorMoved", "CursorMovedI", "BufLeave", "InsertEnter" },
     }
     vim.diagnostic.open_float(nil, opts)

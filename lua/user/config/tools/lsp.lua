@@ -1,4 +1,33 @@
 -- Important , this will lazy_load to prevent unnecessary startup time
+-- Get capabilities (needed for LSP)
+local blink_capabilities = require('blink.cmp').get_lsp_capabilities()
+
+blink_capabilities.textDocument.completion.completionItem = {
+    snippetSupport = true,
+    resolveSupport = {
+        properties = {
+            'documentation',
+            'detail',
+            'additionalTextEdits',
+        }
+    },
+    insertReplaceSupport = true,
+    labelDetailsSupport = true,
+    commitCharactersSupport = true,
+    documentationFormat = { 'markdown', 'plaintext' },
+    deprecatedSupport = true,
+    preselectSupport = true,
+}
+
+-- ADD THIS: Enable file watching
+blink_capabilities.workspace = blink_capabilities.workspace or {}
+blink_capabilities.workspace.didChangeWatchedFiles = {
+    dynamicRegistration = true,
+    relativePatternSupport = true,
+}
+
+_G.blink_capabilities = blink_capabilities
+
 vim.defer_fn(function()
   require('luasnip.loaders.from_vscode').lazy_load()
 end, 100)

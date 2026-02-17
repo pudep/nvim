@@ -197,26 +197,3 @@ require('blink.cmp').setup({
         }
     }
 })
-
--- Get capabilities (needed for LSP)
-local blink_capabilities = require('blink.cmp').get_lsp_capabilities()
-
-blink_capabilities.textDocument.completion.completionItem = {
-    snippetSupport = true,
-    resolveSupport = {
-        properties = {
-            'documentation',
-            'detail',
-            'additionalTextEdits',
-        }
-    },
-    insertReplaceSupport = true,
-    labelDetailsSupport = true,
-    commitCharactersSupport = true,
-    documentationFormat = { 'markdown', 'plaintext' },
-    deprecatedSupport = true,
-    preselectSupport = true,
-}
-
--- Export capabilities for LSP servers to use
-_G.blink_capabilities = blink_capabilities

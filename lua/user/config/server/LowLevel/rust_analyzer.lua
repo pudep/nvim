@@ -8,9 +8,9 @@
 --     return vim.NIL
 -- end
 -- Just acknowledge the refresh request without resetting diagnostics
-vim.lsp.handlers['workspace/diagnostic/refresh'] = function(_, _, _)
-    return vim.NIL
-end
+-- vim.lsp.handlers['workspace/diagnostic/refresh'] = function(_, _, _)
+--     return vim.NIL
+-- end
 
 map("n", "<leader>cc", "<cmd>Cargo check<cr>", {desc = "Cargo check"})
 map("n", "<leader>cz", "<cmd>Cargo run<cr>", {desc = "Cargo check"})
@@ -57,6 +57,11 @@ lspconfig.rust_analyzer.setup({
             
             diagnostics = {
                 enable = true,
+                refresh = {
+                    workspace = {
+                        enable = true, 
+                    }
+                },
                 disabled = {
                     "unresolved-proc-macro",
                     "unresolved-macro-call",
@@ -64,6 +69,10 @@ lspconfig.rust_analyzer.setup({
                 experimental = {
                     enable = false,
                 },
+            },
+
+            restartServerOnConfigChange = {
+                enable = true 
             },
             
             cachePriming = {
@@ -77,6 +86,7 @@ lspconfig.rust_analyzer.setup({
             linkedProjects = {},
             files = {
                 excludeDirs = {".git"},
+                watcher = "server", -- new 
             },
         },
     },
