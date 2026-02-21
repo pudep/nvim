@@ -88,7 +88,7 @@ lspconfig.rust_analyzer.setup({
             linkedProjects = {},
             files = {
                 excludeDirs = {".git"},
-                watcher = "server", -- new 
+                watcher = "client", -- new 
             },
         },
     },

@@ -23,15 +23,12 @@ vim.o.backspace = "indent,eol,start"
 -- Search
 vim.o.incsearch = true
 vim.o.hlsearch = true
-
--- Folding (Treesitter-based)
-vim.o.foldmethod = "expr"
-vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.o.foldlevel = 99
-vim.o.foldlevelstart = 99
-vim.o.foldnestmax = 10
-
--- Syntax & Filetype
+-- Fold
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.lsp.foldexpr()"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
 vim.cmd("syntax on")
 vim.cmd("filetype plugin indent on")
 

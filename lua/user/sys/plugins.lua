@@ -196,9 +196,21 @@ require('lazy').setup({
         -- ===========================
         {
             'nvim-treesitter/nvim-treesitter',
-            commit = '42fc28b',
             build = ':TSUpdate',
-            event = { 'BufReadPre', 'BufNewFile' },
+            config = function()
+                require('nvim-treesitter.config').setup({
+                    ensure_installed = {
+                        'lua',
+                        'vim',
+                        'bash',
+                        'python',
+                        'rust',
+                        'c',
+                    },
+                    highlight = { enable = true },
+                    indent = { enable = true },
+                })
+            end,
         },
 
         -- ===========================
