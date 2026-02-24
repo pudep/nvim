@@ -196,19 +196,29 @@ require('lazy').setup({
         -- ===========================
         {
             'nvim-treesitter/nvim-treesitter',
+            event = 'BufReadPre',
             build = ':TSUpdate',
             config = function()
-                require('nvim-treesitter.config').setup({
-                    ensure_installed = {
-                        'lua',
-                        'vim',
-                        'bash',
-                        'python',
-                        'rust',
-                        'c',
-                    },
-                    highlight = { enable = true },
-                    indent = { enable = true },
+                -- Setup install directory (optional)
+                require('nvim-treesitter').setup({
+                    install_dir = vim.fn.stdpath('data') .. '/site'
+                })
+
+                -- Install parsers (run once or on demand)
+                require('nvim-treesitter').install({
+                    'lua',
+                    'vim',
+                    'bash',
+                    'python',
+                    'rust',
+                })
+
+                -- Enable Treesitter highlighting automatically
+                vim.api.nvim_create_autocmd('FileType', {
+                    callback = function(args)
+                        -- Start treesitter for this buffer
+                        pcall(vim.treesitter.start)
+                    end,
                 })
             end,
         },
