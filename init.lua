@@ -1,4 +1,7 @@
 -- Leader set to space 
+vim.o.winborder = "rounded"
+vim.o.pumborder = "rounded"
+vim.o.undofile = true
 vim.g.mapleader = " "
 vim.g.maplocalleader = "'" -- Local leader
 _G.map = vim.keymap.set
