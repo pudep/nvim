@@ -1,148 +1,63 @@
--- Smart Clipboard System - Fixed and Simple
--- No async delays, works with Termux, uses telescope for pickers
+-- Termux Clipboard Integration
+-- Place in your init.lua or a separate file like lua/termux-clipboard.lua
 
--- ============================================================================
--- SMART CLIPBOARD DETECTION
--- ============================================================================
-local function detect_clipboard()
-    local systems = {
-        {
-            name = 'Termux',
-            check = function()
-                return vim.fn.executable('termux-clipboard-set') == 1
-            end,
-            copy_cmd = 'termux-clipboard-set',
-            paste_cmd = 'termux-clipboard-get',
-        },
-        {
-            name = 'Wayland',
-            check = function()
-                return vim.fn.executable('wl-copy') == 1
-            end,
-            copy_cmd = 'wl-copy',
-            paste_cmd = 'wl-paste',
-        },
-        {
-            name = 'X11 (xclip)',
-            check = function()
-                return vim.fn.executable('xclip') == 1
-            end,
-            copy_cmd = 'xclip -selection clipboard',
-            paste_cmd = 'xclip -selection clipboard -o',
-        },
-        {
-            name = 'X11 (xsel)',
-            check = function()
-                return vim.fn.executable('xsel') == 1
-            end,
-            copy_cmd = 'xsel --clipboard --input',
-            paste_cmd = 'xsel --clipboard --output',
-        },
-        {
-            name = 'macOS',
-            check = function()
-                return vim.fn.executable('pbcopy') == 1
-            end,
-            copy_cmd = 'pbcopy',
-            paste_cmd = 'pbpaste',
-        },
-        {
-            name = 'Windows/WSL',
-            check = function()
-                return vim.fn.executable('clip.exe') == 1
-            end,
-            copy_cmd = 'clip.exe',
-            paste_cmd = 'powershell.exe -c Get-Clipboard',
-        },
-    }
-    
-    for _, sys in ipairs(systems) do
-        if sys.check() then
-            vim.notify('Clipboard: ' .. sys.name, vim.log.levels.INFO)
-            return sys
-        end
-    end
-    
-    vim.notify('No clipboard detected', vim.log.levels.WARN)
-    return nil
+local function termux_copy(text)
+  local handle = io.popen("termux-clipboard-set", "w")
+  if handle then
+    handle:write(text)
+    handle:close()
+    vim.notify("Copied to clipboard", vim.log.levels.INFO)
+  else
+    vim.notify("termux-clipboard-set failed", vim.log.levels.ERROR)
+  end
 end
 
-local clipboard = detect_clipboard()
-
--- ============================================================================
--- HELPER FUNCTIONS
--- ============================================================================
--- FIX 2: Correcting "Corrupted" Paste Data
--- Added trim to remove trailing newlines added by system shells
-local function paste_from_system()
-    if not clipboard then
-        vim.notify('No clipboard available', vim.log.levels.ERROR)
-        return nil
-    end
-    
-    local text = vim.fn.system(clipboard.paste_cmd)
-    if vim.v.shell_error == 0 then
-        -- Remove trailing newline often added by terminal clipboard tools
-        return text:gsub("\r\n$", ""):gsub("\n$", "")
-    else
-        vim.notify('✗ Paste failed', vim.log.levels.ERROR)
-        return nil
-    end
+local function termux_paste()
+  local handle = io.popen("termux-clipboard-get")
+  if handle then
+    local result = handle:read("*a")
+    handle:close()
+    return result
+  end
+  return nil
 end
--- ============================================================================
--- KEYMAPS
--- ============================================================================
 
--- FIX 1: The 'yc' Binding (Copy to system)
--- Normal mode: yc (works with motions, e.g., yciw)
-vim.keymap.set('n', 'yc', function()
-    -- Set an operatorfunc to handle the motion
-    _G.copy_operator = function(type)
-        local saved_reg = vim.fn.getreg('"')
-        local saved_reg_type = vim.fn.getregtype('"')
-        
-        if type == 'v' then
-            vim.cmd('normal! `[v` ]y')
-        elseif type == 'char' then
-            vim.cmd('normal! `[v`]y')
-        elseif type == 'line' then
-            vim.cmd('normal! `[V`]y')
-        end
-        
-        local text = vim.fn.getreg('"')
-        copy_to_system(text)
-        
-        -- Restore original register
-        vim.fn.setreg('"', saved_reg, saved_reg_type)
-    end
-    
-    vim.o.operatorfunc = 'v:lua.copy_operator'
-    return 'g@'
-end, { expr = true, desc = 'Copy motion to system clipboard' })
+-- <Leader>yc — Copy yanked register (") to Termux clipboard
+vim.keymap.set("n", "<leader>yc", function()
+  local text = vim.fn.getreg('"')
+  if text == "" then
+    vim.notify("Yank register is empty", vim.log.levels.WARN)
+    return
+  end
+  termux_copy(text)
+end, { desc = "Copy yank register to Termux clipboard" })
 
--- Visual mode: yc (Copy selection)
-vim.keymap.set('v', 'yc', function()
-    -- Yank the selection to the unnamed register
-    vim.cmd('normal! "y')
-    local text = vim.fn.getreg('"')
-    copy_to_system(text)
-end, { silent = true, desc = 'Copy selection to system clipboard' })
+-- <Leader>yt — Copy visual selection directly to Termux clipboard
+vim.keymap.set("v", "<leader>yt", function()
+  -- Yank selection into " register first
+  vim.cmd('normal! "zy')
+  local text = vim.fn.getreg("z")
+  termux_copy(text)
+end, { desc = "Copy visual selection to Termux clipboard" })
 
-
-
--- 3. <leader>pc - Paste last copied item from system clipboard
-vim.keymap.set('n', '<leader>pc', function()
-    local text = paste_from_system()
-    if text and text ~= '' then
-        -- Set to both + and * registers for consistency
-        vim.fn.setreg('+', text)
-        vim.fn.setreg('*', text)
-        vim.cmd('normal! "+p')
+-- <Leader>pc — Paste from Termux clipboard at cursor
+vim.keymap.set("n", "<leader>pc", function()
+  local text = termux_paste()
+  if text and text ~= "" then
+    -- Remove trailing newline added by termux-clipboard-get
+    text = text:gsub("\n$", "")
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local line = vim.api.nvim_get_current_line()
+    local new_line = line:sub(1, col + 1) .. text .. line:sub(col + 2)
+    -- Handle multiline paste properly
+    if text:find("\n") then
+      local lines = vim.split(text, "\n", { plain = true })
+      vim.api.nvim_put(lines, "c", true, true)
     else
-        vim.notify('Clipboard is empty', vim.log.levels.WARN)
+      vim.api.nvim_put({ text }, "c", true, true)
     end
-end, { 
-    silent = true, 
-    desc = 'Paste from system clipboard' 
-})
-
+    vim.notify("Pasted from clipboard", vim.log.levels.INFO)
+  else
+    vim.notify("Termux clipboard is empty", vim.log.levels.WARN)
+  end
+end, { desc = "Paste from Termux clipboard" })
