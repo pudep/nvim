@@ -56,23 +56,23 @@ return {
         'mikavilpas/yazi.nvim',
         keys = {
             {
-                '<leader>yod',
+                '<leader>od',
                 '<cmd>Yazi<cr>',
-                desc = 'Open cwd',
+                desc = 'Open Yazi in CWD',
             },
             {
-                '<leader>yoc',
+                '<leader>oc',
                 function()
                     require('yazi').yazi(nil, vim.fn.stdpath('config'))
                 end,
-                desc = 'Open runtime',
+                desc = 'Open in Runtime',
             },
             {
-                '<leader>you',
+                '<leader>ou',
                 function()
                     require('yazi').yazi(nil, vim.fn.stdpath('config') .. '/lua/user/')
                 end,
-                desc = 'Open user/',
+                desc = 'Open  in /lua/user/',
             },
         },
         opts = {

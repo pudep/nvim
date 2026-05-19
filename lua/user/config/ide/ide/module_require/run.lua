@@ -78,4 +78,4 @@ local function toggle_runner()
 end
 
 vim.keymap.set('n', '<leader>zz', run_code,      { silent = true, desc = 'Run code' })
-vim.keymap.set('n', '<leader>xz', toggle_runner, { silent = true, desc = 'Toggle code runner' })
+vim.keymap.set('n', '<leader>zx', toggle_runner, { silent = true, desc = 'Toggle code runner' })

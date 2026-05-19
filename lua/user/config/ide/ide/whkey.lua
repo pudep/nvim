@@ -26,18 +26,23 @@ wk.setup({
 wk.add({
     -- Top-level groups
     { '<leader>b', group = '󰓩 Buffers' },
-    { '<leader>c', group = ' Cargo' },
+    { '<leader>c', group = ' Cargo Commands' },
     { '<leader>d', group = '󰃤 Diagnostics' },
-    { '<leader>f', group = '󰍉 FZF' },
-    { '<leader>g', group = '󰊢 Git' },
+    { '<leader>f', group = '󰍉 Find Files' },
+    { '<leader>fi', group = '󰍉 Find Files ..' },
+    { '<leader>g', group = '󰊢 Grep' },
+    { '<leader>gi', group = '󰊢 Grep in ..' },
     { '<leader>l', group = '󰒲 Lazy / LSP' },
-    { '<leader>n', group = '󰵙 Notifications' },
+
+    { '<leader>h', group = '󰵙 History' },
+    { '<leader>t', group = '󰵙 Terminal' },
+
     { '<leader>o', group = '󰇥 Yazi' },
     { '<leader>p', group = '󰅇 Paste' },
     { '<leader>q', group = '󰗼 Quit' },
     { '<leader>s', group = '󰆓 Sessions' },
     { '<leader>u', group = '󰔡 Toggles' },
-    { '<leader>w', group = '󰆓 Save' },
+    { '<leader>w', group = '󰆓 Advanced Save' },
     { '<leader>y', group = '󰅎 Yank' },
     { '<leader>z', group = '󱐋 Code Runner' },
 
@@ -52,27 +57,23 @@ wk.add({
 -- BUFFERS
 -- ============================================
 wk.add({
-    { '<leader>bs', '<Cmd>w<CR>',       desc = 'Save Buffer' },
-    { '<leader>bc', '<Cmd>%d<CR>',      desc = 'Clear Buffer' },
-    { '<leader>bd', '<Cmd>bdelete<CR>', desc = 'Delete Buffer' },
-    { '<leader>bn', '<Cmd>bnext<CR>',   desc = 'Next Buffer' },
-    { '<leader>bp', '<Cmd>bprev<CR>',   desc = 'Prev Buffer' },
+    { '<leader>bb', '<Cmd>w<CR>',       desc = 'Buffer Save [Only for Oil etc buffers]' },
+    { '<leader>br', '<Cmd>%d<CR>',      desc = 'Buffer Remove data [!RISKY!]' },
+    { '<leader>bc', '<Cmd>bdelete<CR>', desc = 'Buffer Close [SAFE]' },
 })
 
 -- ============================================
 -- GIT
 -- ============================================
 wk.add({
-    { '<leader>gl', '<Cmd>LazyGit<CR>', desc = 'LazyGit' },
+    { '<leader>lg', '<Cmd>LazyGit<CR>', desc = 'LazyGit' },
 })
 
 -- ============================================
 -- NOTIFICATIONS
 -- ============================================
 wk.add({
-    { '<leader>nh', '<Cmd>lua MiniNotify.show_history()<CR>', desc = 'History' },
-    { '<leader>nr', '<Cmd>lua MiniNotify.refresh()<CR>',      desc = 'Refresh' },
-    { '<leader>nd', '<Cmd>lua MiniNotify.clear()<CR>',        desc = 'Dismiss All' },
+    { '<leader>hn', '<Cmd>lua MiniNotify.show_history()<CR>', desc = 'Notification History' },
 })
 
 -- ============================================

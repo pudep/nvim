@@ -42,4 +42,4 @@ local function toggle_terminal()
     vim.cmd('startinsert')
 end
 
-vim.keymap.set('n', '<leader>to', toggle_terminal, { desc = 'Toggle terminal' })
+vim.keymap.set('n', '<leader>tt', toggle_terminal, { desc = 'Toggle terminal' })

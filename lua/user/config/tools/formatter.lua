@@ -133,7 +133,7 @@ local function format_file()
 end
 
 -- Keybindings
-vim.keymap.set('n', '<Leader>ffo', toggle_conform, {
+vim.keymap.set('n', '<Leader>uf', toggle_conform, {
   desc = 'Toggle conform formatter on/off',
   noremap = true,
   silent = true

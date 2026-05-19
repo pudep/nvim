@@ -10,21 +10,3 @@ vim.schedule(function()
   require('user.ui.core.statusline')
     require('user.ui.core.ibl')      -- indent lines
 end)
-
-vim.api.nvim_create_autocmd('BufReadPost', {
-  once = true,
-  callback = function()
-    -- These only make sense with actual file content
-    require('user.ui.core.windows')  -- window management
-  end,
-})
-
--- dressing: hijack vim.ui (same pattern as before)
-vim.ui.select = function(...)
-  require('user.ui.core.dressing')
-  vim.ui.select(...)
-end
-vim.ui.input = function(...)
-  require('user.ui.core.dressing')
-  vim.ui.input(...)
-end
