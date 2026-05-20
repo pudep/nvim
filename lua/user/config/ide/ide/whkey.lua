@@ -7,9 +7,9 @@ wk.setup({
     preset = 'modern',
     delay = 200,
     modes = {
-        n = true, -- Normal
-        v = true, -- Visual
-        o = true, -- Operator pending
+        n = true,  -- Normal
+        v = true,  -- Visual
+        o = true,  -- Operator pending
         i = false, -- Insert (disabled)
         c = false, -- Command line (disabled)
     },
@@ -26,21 +26,23 @@ wk.setup({
 wk.add({
     -- Top-level groups
     { '<leader>b', group = '󰓩 Buffers' },
-    { '<leader>c', group = ' Cargo Commands' },
+    { '<leader>c', group = '󱘗 Cargo Commands' },
     { '<leader>d', group = '󰃤 Diagnostics' },
+    { '<leader>e', group = '󰍉 Fzf Flexible' },
     { '<leader>f', group = '󰍉 Find Files' },
     { '<leader>fi', group = '󰍉 Find Files ..' },
-    { '<leader>g', group = '󰊢 Grep' },
+    { '<leader>g', group = '󰍉 Grep' },
     { '<leader>G', group = '󰊢 GIT' },
     { '<leader>gi', group = '󰊢 Grep in ..' },
     { '<leader>l', group = '󰒲 Lazy / LSP' },
 
-    { '<leader>h', group = '󰵙 History' },
-    { '<leader>t', group = '󰵙 Terminal' },
+    { '<leader>h', group = '󰋚 History' },
+    { '<leader>t', group = '󰆍 Terminal' },
 
     { '<leader>o', group = '󰇥 Yazi' },
     { '<leader>p', group = '󰅇 Paste' },
     { '<leader>q', group = '󰗼 Quit' },
+    { '<leader>r', group = '󰏗 Plug Load' },
     { '<leader>s', group = '󰆓 Sessions' },
     { '<leader>u', group = '󰔡 Toggles' },
     { '<leader>w', group = '󰆓 Advanced Save' },
