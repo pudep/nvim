@@ -30,27 +30,26 @@ wk.add({
     { '<leader>d', group = '󰃤 Diagnostics' },
     { '<leader>e', group = '󰍉 Fzf Flexible' },
     { '<leader>f', group = '󰍉 Find Files' },
-    { '<leader>fi', group = '󰍉 Find Files ..' },
     { '<leader>g', group = '󰍉 Grep' },
     { '<leader>G', group = '󰊢 GIT' },
-    { '<leader>gi', group = '󰊢 Grep in ..' },
-    { '<leader>l', group = '󰒲 Lazy / LSP' },
-
     { '<leader>h', group = '󰋚 History' },
-    { '<leader>t', group = '󰆍 Terminal' },
-
+    { '<leader>l', group = '󰒲 Lazy / LSP' },
     { '<leader>o', group = '󰇥 Yazi' },
     { '<leader>p', group = '󰅇 Paste' },
     { '<leader>q', group = '󰗼 Quit' },
-    { '<leader>r', group = '󰏗 Plug Load' },
+    { '<leader>r', group = '󰑓 Reload' },
     { '<leader>s', group = '󰆓 Sessions' },
+    { '<leader>t', group = '󰆍 Terminal' },
     { '<leader>u', group = '󰔡 Toggles' },
     { '<leader>w', group = '󰆓 Advanced Save' },
     { '<leader>y', group = '󰅎 Yank' },
     { '<leader>z', group = '󱐋 Code Runner' },
 
     -- Sub-groups
+    { '<leader>fi', group = '󰍉 Find Files ..' },
+    { '<leader>gi', group = '󰊢 Grep in ..' },
     { '<leader>ll', group = '󰒲 Lazy' },
+    { '<leader>lo', group = '󰏗 Plug Load' },
     { '<leader>ls', group = '󰒍 LSP Server' },
     { '<leader>qf', group = '󰗼 Force Quit' },
     { '<leader>wf', group = '󰆓 Force Save' },
@@ -78,6 +77,27 @@ wk.add({
 -- ============================================
 wk.add({
     { '<leader>hn', '<Cmd>lua MiniNotify.show_history()<CR>', desc = 'Notification History' },
+})
+
+-- ============================================
+-- Reload
+-- ============================================
+wk.add({
+    {
+        '<leader>rr',
+        '<Cmd>mksession! Session.vim | restart source Session.vim<cr>',
+        desc = 'Restart (Save & Restore Session)'
+    },
+    {
+        '<leader>rs',
+        '<Cmd>restart<cr>',
+        desc = 'Restart Safely (Fails if Unsaved)'
+    },
+    {
+        '<leader>rf',
+        '<Cmd>restart +qall!<cr>', -- Added the ! here so it actually forces the quit
+        desc = 'Restart & Discard Unsaved Changes'
+    },
 })
 
 -- ============================================
