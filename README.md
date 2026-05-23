@@ -1,5 +1,4 @@
-# 🌙 nvim-termux
-
+# 🌙 Arch-Nvim
 > The just-work distro that works out of the box for Neovim 0.12+
 
 ![Neovim](https://img.shields.io/badge/Neovim-0.12%2B-57A143?style=flat-square&logo=neovim)
@@ -71,7 +70,7 @@ vscode-css-language-server  vscode-html-language-server  gopls  typescript-langu
 
 **Leader:** `<Space>` &nbsp;|&nbsp; **Local Leader:** `'`
 
-→ Full keymap reference: [Keymaps.md](./READ/Keymaps.lua)
+→ Full keymap reference: [Keymaps.md](./READ/Keymaps.md)
 
 ---
 
