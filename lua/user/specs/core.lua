@@ -3,20 +3,6 @@
 -- ===========================
 return {
     {
-        'nvim-lua/plenary.nvim',
-        lazy = true,
-    },
-    {
-        'MunifTanjim/nui.nvim',
-
-        lazy = true,
-    },
-    {
-        'nvim-neotest/nvim-nio',
-
-        lazy = true,
-    },
-    {
         'ojroques/nvim-osc52',
         event = "TextYankPost",
         config = function()

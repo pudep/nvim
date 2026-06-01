@@ -1,4 +1,3 @@
--- Setup runs on first keypress, not at startup
 local setup_done = false
 local function fzf()
     if not setup_done then
@@ -11,53 +10,114 @@ local function fzf()
                 col     = 0.50,
                 border  = 'rounded',
                 preview = {
-                    border = 'rounded',
-                    wrap = 'nowrap',
-                    hidden = 'nohidden',
-                    vertical = 'down:45%',
-                    horizontal = 'right:60%',
-                    layout = 'flex',
+                    border       = 'rounded',
+                    wrap         = 'nowrap',
+                    hidden       = 'nohidden',
+                    vertical     = 'down:45%',
+                    horizontal   = 'right:60%',
+                    layout       = 'flex',
                     flip_columns = 120,
                 },
             },
             fzf_colors = {
-                ['fg'] = { 'fg', 'Normal' },
-                ['bg'] = { 'bg', 'Normal' },
-                ['fg+'] = { 'fg', 'Normal' },
-                ['bg+'] = { 'bg', 'Visual' },
-                ['hl'] = { 'fg', 'Identifier' },
-                ['hl+'] = { 'fg', 'Statement' },
-                ['prompt'] = { 'fg', 'Keyword' },
+                ['fg']      = { 'fg', 'Normal' },
+                ['bg']      = { 'bg', 'Normal' },
+                ['fg+']     = { 'fg', 'Normal' },
+                ['bg+']     = { 'bg', 'Visual' },
+                ['hl']      = { 'fg', 'Identifier' },
+                ['hl+']     = { 'fg', 'Statement' },
+                ['prompt']  = { 'fg', 'Keyword' },
                 ['pointer'] = { 'fg', 'Type' },
-                ['marker'] = { 'fg', 'Type' },
-                ['header'] = { 'fg', 'Title' },
-                ['info'] = { 'fg', 'Special' },
+                ['marker']  = { 'fg', 'Type' },
+                ['header']  = { 'fg', 'Title' },
+                ['info']    = { 'fg', 'Special' },
             },
             files = {
-                prompt = ' ',
+                prompt       = ' ',
                 multiprocess = true,
-                git_icons = true,
-                file_icons = true,
-                color_icons = true,
-                fd_opts = '--color=never --type f --hidden --follow --exclude .git',
+                git_icons    = true,
+                file_icons   = true,
+                color_icons  = true,
+                fd_opts      = '--color=never --type f --hidden --follow --exclude .git',
             },
             grep = {
-                prompt = ' ',
+                prompt       = ' ',
                 input_prompt = 'Grep  ',
                 multiprocess = true,
-                git_icons = true,
-                file_icons = true,
-                color_icons = true,
-                rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!.git'",
+                git_icons    = true,
+                file_icons   = true,
+                color_icons  = true,
+                rg_opts      = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!.git'",
             },
         })
+
+        require('fzf-lua').register_ui_select()
+
+        vim.ui.input = function(opts, on_confirm)
+            local prompt  = opts.prompt or 'Input: '
+            local default = opts.default or ''
+
+            local buf     = vim.api.nvim_create_buf(false, true)
+            local width   = math.max(40, #prompt + #default + 10)
+            local win     = vim.api.nvim_open_win(buf, true, {
+                relative  = 'cursor',
+                row       = 1,
+                col       = 0,
+                width     = width,
+                height    = 1,
+                style     = 'minimal',
+                border    = 'rounded',
+                title     = ' ' .. prompt .. ' ',
+                title_pos = 'left',
+            })
+
+            vim.api.nvim_buf_set_lines(buf, 0, -1, false, { default })
+            vim.cmd('startinsert!')
+            if #default > 0 then
+                vim.api.nvim_win_set_cursor(win, { 1, #default })
+            end
+
+            local function close(confirm)
+                local value = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1]
+                vim.api.nvim_win_close(win, true)
+                vim.cmd('stopinsert')
+                if confirm then
+                    on_confirm(value ~= '' and value or nil)
+                else
+                    on_confirm(nil)
+                end
+            end
+
+            local map_opts = { buffer = buf, nowait = true }
+            vim.keymap.set('i', '<CR>', function() close(true) end, map_opts)
+            vim.keymap.set('i', '<C-c>', function() close(false) end, map_opts)
+            vim.keymap.set('n', '<Esc>', function() close(false) end, map_opts)
+            vim.keymap.set('n', '<CR>', function() close(true) end, map_opts)
+        end
     end
     return require('fzf-lua')
 end
 
--- Termux detection (computed once, not per keypress)
 -- ============================
--- Functions
+-- Bootstrap vim.ui overrides
+-- ============================
+-- These shims replace vim.ui.select and vim.ui.input immediately at startup
+-- (no plugin loaded yet). On first call, they trigger fzf() which loads
+-- fzf-lua, sets up everything, and replaces these shims with real handlers.
+-- Second call onwards goes directly to the real handlers.
+
+vim.ui.select = function(...)
+    fzf()
+    vim.ui.select(...)
+end
+
+vim.ui.input = function(opts, on_confirm)
+    fzf()
+    vim.ui.input(opts, on_confirm)
+end
+
+-- ============================
+-- Termux detection
 -- ============================
 local _home, _root
 local function sys_home()
@@ -72,104 +132,49 @@ local function sys_root()
 end
 
 -- ============================
--- find file -- keymaps
+-- Keymaps
 -- ============================
 local k = vim.keymap.set
 k('n', '<leader>fz', function()
     fzf().setup_called = true; vim.cmd('FzfLua')
 end, { desc = 'FzfLua' })
-
 k('n', '<leader>fd', function() fzf().files() end, { desc = 'Find files CWD' })
-
 k('n', '<leader>fo', function() fzf().oldfiles() end, { desc = 'Recent files' })
-
 k('n', '<leader>fc',
     function() fzf().files({ cwd = vim.fn.expand('$MYVIMRC'):match('(.*/)'), prompt = '< Neovim Config > ' }) end,
     { desc = 'Find config files' })
-
-k('n', '<leader>fs',
-    function() fzf().files({ cwd = vim.fn.stdpath('config') .. '/lua/user/stages', prompt = '< User Stages > ' }) end,
-    { desc = 'Find stage files' })
-
-
 k('n', '<leader>fih', function() fzf().files({ cwd = sys_home() }) end, { desc = 'Find Files in HOME' })
-
 k('n', '<leader>fir', function() fzf().files({ cwd = sys_root() }) end, { desc = 'Find Files in ROOT' })
-
-
--- ============================
--- diagnostics -- keymaps
--- ============================
-
 k('n', '<leader>dw', function() fzf().diagnostics_workspace() end, { desc = 'Workspace diagnostics' })
-
--- ============================
--- grep dir -- map
--- ============================
-k('n', '<leader>gd', function() fzf().live_grep({prompt = "GrepCwd: "}) end, { desc = 'Live grep CWD' })
-
+k('n', '<leader>gd', function() fzf().live_grep({ prompt = 'GrepCwd: ' }) end, { desc = 'Live grep CWD' })
 k('n', '<leader>gc', function() fzf().live_grep({ cwd = vim.fn.stdpath('config'), prompt = 'GrepConfig: ' }) end,
     { desc = 'Grep config' })
-
-k('n', '<leader>gs', function() fzf().live_grep({ cwd = vim.fn.stdpath('config') .. '/lua/user/stages/', prompt = 'GrepStages: ' }) end,
-    { desc = 'Grep config' })
-
--- ============================
--- grep in -- map
--- ============================
-
-k('n', '<leader>gih', function() fzf().live_grep({ cwd = sys_home(), prompt = "GrepHome/" }) end, { desc = 'Grep home' })
-k('n', '<leader>gir', function() fzf().live_grep({ cwd = sys_root(), prompt = "GrepRoot/" }) end, { desc = 'Grep root' })
-
+k('n', '<leader>gih', function() fzf().live_grep({ cwd = sys_home(), prompt = 'GrepHome/' }) end, { desc = 'Grep home' })
+k('n', '<leader>gir', function() fzf().live_grep({ cwd = sys_root(), prompt = 'GrepRoot/' }) end, { desc = 'Grep root' })
 k('n', '<leader>Gc', function() fzf().git_commits() end, { desc = 'Git commits' })
-
 k('n', '<leader>Gs', function() fzf().git_status() end, { desc = 'Git status' })
 
-
-
-
-
-
-
--- In your keymaps file
-
 local function fzf_in_custom_dir(mode)
-  mode = mode or "files"
-
-  -- Floating input prompt
-  vim.ui.input({
-    prompt = " Dir: ",
-    default = vim.fn.getcwd(),
-    completion = "dir",   -- <Tab> completes directory names
-  }, function(input)
-    if not input or input == "" then return end
-
-    -- Expand ~, $ENV_VAR, shell globs
-    local path = vim.fn.expand(input)
-
-    -- Also resolve env vars the expand() may have missed
-    path = path:gsub("%$(%w+)", function(var)
-      return os.getenv(var) or ("$" .. var)
+    mode = mode or 'files'
+    vim.ui.input({
+        prompt     = ' Dir: ',
+        default    = vim.fn.getcwd(),
+        completion = 'dir',
+    }, function(input)
+        if not input or input == '' then return end
+        local path = vim.fn.expand(input)
+        path = path:gsub('%$(%w+)', function(var) return os.getenv(var) or ('$' .. var) end)
+        if vim.fn.isdirectory(path) == 0 then
+            vim.notify('Not a directory: ' .. path, vim.log.levels.ERROR)
+            return
+        end
+        if mode == 'files' then
+            require('fzf-lua').files({ cwd = path })
+        elseif mode == 'grep' then
+            require('fzf-lua').live_grep({ cwd = path })
+        end
     end)
-
-    if vim.fn.isdirectory(path) == 0 then
-      vim.notify("Not a directory: " .. path, vim.log.levels.ERROR)
-      return
-    end
-
-    if mode == "files" then
-      require("fzf-lua").files({ cwd = path })
-    elseif mode == "grep" then
-      require("fzf-lua").live_grep({ cwd = path })
-    elseif mode == "explorer" then
-      require("fzf-lua").file_browser({ cwd = path })
-    end
-  end)
 end
 
--- Keymaps
-vim.keymap.set("n", "<leader>ef", function() fzf_in_custom_dir("files") end,
-  { desc = "FZF files in typed dir", noremap = true, silent = true })
-
-vim.keymap.set("n", "<leader>eg", function() fzf_in_custom_dir("grep") end,
-  { desc = "FZF grep in typed dir", noremap = true, silent = true })
+k('n', '<leader>ef', function() fzf_in_custom_dir('files') end, { desc = 'FZF files in typed dir' })
+k('n', '<leader>eg', function() fzf_in_custom_dir('grep') end, { desc = 'FZF grep in typed dir' })
