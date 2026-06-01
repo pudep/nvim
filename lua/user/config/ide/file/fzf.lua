@@ -1,13 +1,3 @@
--- user/config/ide/file/fzf.lua
-
--- Highlights are cheap, keep these at top level
-vim.api.nvim_set_hl(0, 'FzfLuaNormal', { link = 'Normal' })
-vim.api.nvim_set_hl(0, 'FzfLuaBorder', { link = 'FloatBorder' })
-vim.api.nvim_set_hl(0, 'FzfLuaTitle', { link = 'Title' })
-vim.api.nvim_set_hl(0, 'FzfLuaPreviewNormal', { link = 'Normal' })
-vim.api.nvim_set_hl(0, 'FzfLuaCursorLine', { link = 'Visual' })
-vim.api.nvim_set_hl(0, 'FzfLuaCursor', { link = 'IncSearch' })
-
 -- Setup runs on first keypress, not at startup
 local setup_done = false
 local function fzf()
