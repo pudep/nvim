@@ -13,27 +13,24 @@ end
 --- Return the first non-nil value from a list of candidates.
 local function first(...)
     for _, v in ipairs({ ... }) do
-        if v ~= nil then return v end
+        if v ~= nil then
+            return v
+        end
     end
 end
 
 function M.setup()
     -- ── Palette ────────────────────────────────────────────────────────────
-    local bg         = hl_bg("Normal")          or "#1e1e2e"
-    local fg         = hl_fg("Normal")          or "#cdd6f4"
-    local border_fg  = first(
-                         hl_fg("Special"),
-                         hl_fg("Identifier"),
-                         hl_fg("NonText"),
-                         fg
-                       )
-    local accent     = first(hl_fg("Special"),   hl_fg("Function"),    border_fg)
-    local muted      = first(hl_fg("Comment"),   hl_fg("NonText"),     fg)
-    local sel_bg     = first(hl_bg("Visual"),    hl_bg("CursorLine"),  hl_bg("PmenuSel"), bg)
-    local warn_fg    = first(hl_fg("DiagnosticWarn"),  hl_fg("WarningMsg"),   "#ffaa00")
-    local info_fg    = first(hl_fg("DiagnosticInfo"),  hl_fg("Special"),      "#89dceb")
-    local ok_fg      = first(hl_fg("DiagnosticOk"),    hl_fg("String"),       "#00ff88")
-    local err_fg     = first(hl_fg("DiagnosticError"), hl_fg("ErrorMsg"),     "#f38ba8")
+    local bg = hl_bg("Normal") or "#1e1e2e"
+    local fg = hl_fg("Normal") or "#cdd6f4"
+    local border_fg = first(hl_fg("Special"), hl_fg("Identifier"), hl_fg("NonText"), fg)
+    local accent = first(hl_fg("Special"), hl_fg("Function"), border_fg)
+    local muted = first(hl_fg("Comment"), hl_fg("NonText"), fg)
+    local sel_bg = first(hl_bg("Visual"), hl_bg("CursorLine"), hl_bg("PmenuSel"), bg)
+    local warn_fg = first(hl_fg("DiagnosticWarn"), hl_fg("WarningMsg"), "#ffaa00")
+    local info_fg = first(hl_fg("DiagnosticInfo"), hl_fg("Special"), "#89dceb")
+    local ok_fg = first(hl_fg("DiagnosticOk"), hl_fg("String"), "#00ff88")
+    local err_fg = first(hl_fg("DiagnosticError"), hl_fg("ErrorMsg"), "#f38ba8")
 
     -- ── Helper ─────────────────────────────────────────────────────────────
     --- Batch-set highlight groups from a table of { GroupName, opts } pairs.
@@ -44,66 +41,66 @@ function M.setup()
     end
 
     -- ── Core floats / borders / splits ─────────────────────────────────────
-    set_hls {
-        { "NormalFloat",  { bg = bg,         fg = fg                          } },
-        { "FloatTitle",   { fg = bg,          bg = border_fg, bold = true      } },
-        { "FloatBorder",  { fg = border_fg,   bg = bg,        bold = true      } },
-        { "WinSeparator", { fg = border_fg,   bold = true                      } },
-        { "VertSplit",    { fg = border_fg,   bold = true                      } },
-    }
+    set_hls({
+        { "NormalFloat", { bg = bg, fg = fg } },
+        { "FloatTitle", { fg = bg, bg = border_fg, bold = true } },
+        { "FloatBorder", { fg = border_fg, bg = bg, bold = true } },
+        { "WinSeparator", { fg = border_fg, bold = true } },
+        { "VertSplit", { fg = border_fg, bold = true } },
+    })
 
     vim.g.float_border_style = "rounded"
 
     -- ── fzf-lua ────────────────────────────────────────────────────────────
-    set_hls {
-        { "FzfLuaNormal",        { bg = bg,         fg = fg                       } },
-        { "FzfLuaBorder",        { fg = border_fg,  bg = bg,       bold = true    } },
-        { "FzfLuaTitle",         { fg = bg,         bg = border_fg, bold = true   } },
-        { "FzfLuaPreviewNormal", { bg = bg,         fg = fg                       } },
-        { "FzfLuaPreviewBorder", { fg = border_fg,  bg = bg,       bold = true    } },
-        { "FzfLuaPreviewTitle",  { fg = bg,         bg = border_fg, bold = true   } },
-        { "FzfLuaCursor",        { fg = accent,     bold = true                   } },
-        { "FzfLuaCursorLine",    { bg = sel_bg                                    } },
-        { "FzfLuaCursorLineNr",  { fg = accent,     bold = true                   } },
-        { "FzfLuaScrollBorder",  { fg = border_fg                                 } },
-        { "FzfLuaScrollFloat",   { fg = border_fg                                 } },
-        { "FzfLuaHelpNormal",    { bg = bg,         fg = fg                       } },
-        { "FzfLuaHelpBorder",    { fg = border_fg,  bg = bg,       bold = true    } },
-        { "FzfLuaHeaderBind",    { fg = accent                                    } },
-        { "FzfLuaHeaderText",    { fg = muted                                     } },
-        { "FzfLuaPathColNr",     { fg = info_fg                                   } },
-        { "FzfLuaPathLineNr",    { fg = ok_fg                                     } },
-        { "FzfLuaBufName",       { fg = accent                                    } },
-        { "FzfLuaBufNr",         { fg = muted                                     } },
-        { "FzfLuaBufFlagCur",    { fg = accent,     bold = true                   } },
-        { "FzfLuaBufFlagAlt",    { fg = info_fg                                   } },
-        { "FzfLuaTabTitle",      { fg = accent,     bold = true                   } },
-        { "FzfLuaTabMarker",     { fg = ok_fg,      bold = true                   } },
-        { "FzfLuaDirIcon",       { fg = accent                                    } },
-        { "FzfLuaFilePart",      { fg = fg                                        } },
-        { "FzfLuaDirPart",       { fg = muted                                     } },
-        { "FzfLuaLiveSym",       { fg = ok_fg                                     } },
-    }
+    set_hls({
+        { "FzfLuaNormal", { bg = bg, fg = fg } },
+        { "FzfLuaBorder", { fg = border_fg, bg = bg, bold = true } },
+        { "FzfLuaTitle", { fg = bg, bg = border_fg, bold = true } },
+        { "FzfLuaPreviewNormal", { bg = bg, fg = fg } },
+        { "FzfLuaPreviewBorder", { fg = border_fg, bg = bg, bold = true } },
+        { "FzfLuaPreviewTitle", { fg = bg, bg = border_fg, bold = true } },
+        { "FzfLuaCursor", { fg = accent, bold = true } },
+        { "FzfLuaCursorLine", { bg = sel_bg } },
+        { "FzfLuaCursorLineNr", { fg = accent, bold = true } },
+        { "FzfLuaScrollBorder", { fg = border_fg } },
+        { "FzfLuaScrollFloat", { fg = border_fg } },
+        { "FzfLuaHelpNormal", { bg = bg, fg = fg } },
+        { "FzfLuaHelpBorder", { fg = border_fg, bg = bg, bold = true } },
+        { "FzfLuaHeaderBind", { fg = accent } },
+        { "FzfLuaHeaderText", { fg = muted } },
+        { "FzfLuaPathColNr", { fg = info_fg } },
+        { "FzfLuaPathLineNr", { fg = ok_fg } },
+        { "FzfLuaBufName", { fg = accent } },
+        { "FzfLuaBufNr", { fg = muted } },
+        { "FzfLuaBufFlagCur", { fg = accent, bold = true } },
+        { "FzfLuaBufFlagAlt", { fg = info_fg } },
+        { "FzfLuaTabTitle", { fg = accent, bold = true } },
+        { "FzfLuaTabMarker", { fg = ok_fg, bold = true } },
+        { "FzfLuaDirIcon", { fg = accent } },
+        { "FzfLuaFilePart", { fg = fg } },
+        { "FzfLuaDirPart", { fg = muted } },
+        { "FzfLuaLiveSym", { fg = ok_fg } },
+    })
 
     -- ── mini.notify ────────────────────────────────────────────────────────
-    set_hls {
-        { "MiniNotifyBorder",        { fg = border_fg, bg = bg,        bold = true } },
-        { "MiniNotifyNormal",        { bg = bg,        fg = fg                      } },
-        { "MiniNotifyTitle",         { fg = bg,        bg = border_fg, bold = true  } },
-        { "MiniNotifyWindowTooTall", { fg = warn_fg                                 } },
-    }
+    set_hls({
+        { "MiniNotifyBorder", { fg = border_fg, bg = bg, bold = true } },
+        { "MiniNotifyNormal", { bg = bg, fg = fg } },
+        { "MiniNotifyTitle", { fg = bg, bg = border_fg, bold = true } },
+        { "MiniNotifyWindowTooTall", { fg = warn_fg } },
+    })
 
     -- ── Diagnostics (virtual text + signs unified) ─────────────────────────
-    set_hls {
-        { "DiagnosticVirtualTextError", { fg = err_fg,  bg = bg, italic = true } },
-        { "DiagnosticVirtualTextWarn",  { fg = warn_fg, bg = bg, italic = true } },
-        { "DiagnosticVirtualTextInfo",  { fg = info_fg, bg = bg, italic = true } },
-        { "DiagnosticVirtualTextOk",    { fg = ok_fg,   bg = bg, italic = true } },
-        { "DiagnosticSignError",        { fg = err_fg,  bold = true            } },
-        { "DiagnosticSignWarn",         { fg = warn_fg, bold = true            } },
-        { "DiagnosticSignInfo",         { fg = info_fg, bold = true            } },
-        { "DiagnosticSignOk",           { fg = ok_fg,   bold = true            } },
-    }
+    set_hls({
+        { "DiagnosticVirtualTextError", { fg = err_fg, bg = bg, italic = true } },
+        { "DiagnosticVirtualTextWarn", { fg = warn_fg, bg = bg, italic = true } },
+        { "DiagnosticVirtualTextInfo", { fg = info_fg, bg = bg, italic = true } },
+        { "DiagnosticVirtualTextOk", { fg = ok_fg, bg = bg, italic = true } },
+        { "DiagnosticSignError", { fg = err_fg, bold = true } },
+        { "DiagnosticSignWarn", { fg = warn_fg, bold = true } },
+        { "DiagnosticSignInfo", { fg = info_fg, bold = true } },
+        { "DiagnosticSignOk", { fg = ok_fg, bold = true } },
+    })
 end
 
 vim.api.nvim_create_autocmd("ColorScheme", { callback = M.setup })
