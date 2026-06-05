@@ -3,10 +3,10 @@
 -- ===========================
 return {
     {
-        'folke/trouble.nvim',
+        "folke/trouble.nvim",
         opts = {},
         keys = {
-            { '<leader>dt', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Trouble Toggle' },
+            { "<leader>dt", "<cmd>Trouble diagnostics toggle<cr>", desc = "Trouble Toggle" },
         },
     },
 }

@@ -1,21 +1,23 @@
--- ===========================
--- Colorschemes (all lazy loaded)
--- ===========================
 return {
-  {
-    'folke/tokyonight.nvim',
-    lazy = false,    -- important for colorschemes
-    priority = 1000, -- ensure it loads first
-
-    opts = {
-      styles = {
-        comments  = { italic = false },
-        keywords  = { italic = false },
-        functions = { italic = false },
-        variables = { italic = false },
-      },
-      sidebars = 'dark',
-      floats = 'dark',
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {
+            cache = true,
+            styles = {
+                comments = { italic = false },
+                keywords = { italic = false },
+                functions = { italic = false },
+                variables = { italic = false },
+            },
+            terminal_colors = true,
+            sidebars = "dark",
+            floats = "dark",
+        },
+        config = function(_, opts)
+            require("tokyonight").setup(opts)
+            vim.cmd.colorscheme("tokyonight")
+        end,
     },
-  },
 }
