@@ -1,6 +1,7 @@
 vim.loader.enable()
 require("user.sys")
-require("user.config.server")
+require("plugin")
+require("server")
 vim.defer_fn(function()
     require("user.ui.core")
     require("user.mini")
