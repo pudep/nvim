@@ -9,30 +9,25 @@ return {
                 install_dir = vim.fn.stdpath("data") .. "/site",
             })
 
-            -- install() is async; :wait() only needed for bootstrapping scripts
-            -- safe to leave as-is if you want blocking install on first launch
             require("nvim-treesitter")
                 .install({
-                    "lua",
-                    "javascript",
-                    "zig",
-                    "go",
-                    "python",
-                    "html",
-                    "css",
+                    "lua", "javascript", "zig", "go",
+                    "python", "html", "css",
                 })
                 :wait(300000)
 
-            -- vim.api.nvim_create_autocmd("FileType", {
-            --     pattern = { "lua", "javascript", "zig", "go", "python", "html", "css" },
-            --     callback = function()
-            vim.treesitter.start()
-            vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-            vim.wo[0][0].foldmethod = "expr"
-            vim.wo[0][0].foldlevel = 99 -- open all folds by default
-            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-            -- end,
-            -- })
+            vim.api.nvim_create_autocmd("FileType", {
+                callback = function()
+                    local ok = pcall(vim.treesitter.start)
+                    if not ok then return end
+
+                    local wo = vim.wo[0][0]
+                    wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                    wo.foldmethod = "expr"
+                    wo.foldlevel = 99
+                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                end,
+            })
         end,
     },
 }
