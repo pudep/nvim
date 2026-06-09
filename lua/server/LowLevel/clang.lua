@@ -11,7 +11,7 @@ vim.lsp.config("clangd", {
         "--pch-storage=memory",
     },
     flags = {
-        debounce_text_changes = 150,  -- ms after you stop typing before LSP gets the update
+        debounce_text_changes = 150,
     },
     filetypes = { "c", "cpp" },
     init_options = {
