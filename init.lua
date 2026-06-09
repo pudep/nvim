@@ -1,6 +1,5 @@
 vim.loader.enable()
 require("sys")
-vim.cmd.colorscheme([[catppuccin]])
 require("ui")
 require("plugin")
 require("server")

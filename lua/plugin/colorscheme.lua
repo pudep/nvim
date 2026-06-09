@@ -1,16 +1,26 @@
 return {
     {
-        "Mofiqul/vscode.nvim",
+        "folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
         config = function()
-            require("vscode").setup({
+            require("tokyonight").setup({
+                style = "moon",
+                styles = {
+                    comments = { italic = false },
+                    keywords = { italic = false },
+                    functions = { italic = false },
+                    variables = { italic = false },
+                    sidebars = "dark",
+                    floats = "dark",
+                },
+
                 transparent = false,
-                italic_comments = false, -- Changed from true to false
-                underline_links = true,
-                disable_nvimtree_bg = true,
+                terminal_colors = true,
+                dim_inactive = false,
             })
-            vim.cmd.colorscheme("vscode")
+
+            vim.cmd.colorscheme("tokyonight-moon")
         end,
     },
 }
