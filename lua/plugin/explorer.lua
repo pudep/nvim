@@ -153,14 +153,14 @@ return {
     },
     {
         "NeogitOrg/neogit",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "sindrets/diffview.nvim",
-            "ibhagwan/fzf-lua",
-        },
+        cmd = "Neogit",
         keys = {
             { "<leader>lg", "<cmd>Neogit<cr>", desc = "Neogit" },
         },
-        config = true,
+        dependencies = {
+            { "nvim-lua/plenary.nvim", lazy = true },
+            { "sindrets/diffview.nvim", lazy = true },
+            { "ibhagwan/fzf-lua", lazy = true },
+        },
     },
 }
