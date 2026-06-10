@@ -2,7 +2,6 @@
 -- File Exploration & Navigation
 -- ===========================
 return {
-    -- lua/plugins/oil.lua  (or wherever your plugin specs live)
     {
         "stevearc/oil.nvim",
         lazy = true,
@@ -21,7 +20,6 @@ return {
             },
         },
     },
-    -- lua/plugins/fzf-lua.lua
     {
         "ibhagwan/fzf-lua",
         keys = {
