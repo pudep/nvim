@@ -21,7 +21,6 @@ require("lazy").setup({
         { import = "plugin.core" },
         { import = "plugin.snippets" },
         { import = "plugin.completion" },
-        { import = "plugin.lsp" },
         { import = "plugin.formatting" },
         { import = "plugin.treesitter" },
         { import = "plugin.explorer" },
