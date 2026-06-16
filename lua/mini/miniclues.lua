@@ -199,8 +199,6 @@ vim.keymap.set("n", "<Leader>wfa", "<Cmd>wqall!<CR>", { desc = "Force Save & Qui
 -- ============================================
 vim.keymap.set("n", "<Leader>ya", "<Cmd>%y+<CR>", { desc = "Yank All" })
 vim.keymap.set("n", "<Leader>yp", "<Cmd>let @+ = expand('%:p')<CR>", { desc = "Yank File Path" })
-vim.keymap.set("n", "<Leader>yf", "<Cmd>let @+ = expand('%:t')<CR>", { desc = "Yank File Name" })
-
 -- ============================================
 -- LAZY
 -- ============================================

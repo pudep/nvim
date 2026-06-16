@@ -1,5 +1,6 @@
 vim.loader.enable()
 vim.cmd.colorscheme([[catppuccin]])
+require('vim._core.ui2').enable()
 require("sys")
 require("map")
 require("ui")
