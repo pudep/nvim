@@ -3,7 +3,7 @@ return {
         "nvim-treesitter/nvim-treesitter",
         lazy = true,
         build = ":TSUpdate",
-        event = "BufReadPre",
+        event = "BufEnter",
 
         config = function()
             vim.defer_fn(function()
@@ -42,7 +42,6 @@ return {
                         vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                     end,
                 })
-
             end, 0)
         end,
     },
