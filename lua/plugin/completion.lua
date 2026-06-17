@@ -34,6 +34,7 @@ return {
             completion = {
                 documentation = { auto_show = false },
                 menu = {
+                    max_height = 8,
                     draw = {
                         columns = { { "kind_icon" }, { "label", gap = 1 } }, -- drop label_description
                         components = {
