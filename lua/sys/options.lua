@@ -23,9 +23,9 @@ vim.o.confirm = true
 -- ================================================
 -- Persistant undo
 -- ================================================
-vim.opt.undofile = true
-vim.opt.undodir = vim.fn.stdpath("state") .. "/undo"
-vim.opt.undolevels = 1000
+-- vim.opt.undofile = true
+-- vim.opt.undodir = vim.fn.stdpath("state") .. "/undo"
+-- vim.opt.undolevels = 1000
 -- ================================================
 -- Indent and Movement
 -- ================================================
