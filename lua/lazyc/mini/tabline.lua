@@ -11,10 +11,10 @@
 
 -- current buf/tab (bold, resolved from PmenuSel since `link` drops extra attrs),
 -- unsaved changes marker, inactive buf
-vim.api.nvim_set_hl(0, "TabLineSel", {link = "Cursor" ,bold = true })
+vim.api.nvim_set_hl(0, "TabLineSel", {link = "PmenuSel" ,bold = true })
 vim.api.nvim_set_hl(0, "TabLineModified", { link = "DiagnosticWarn", bold = true })
 vim.api.nvim_set_hl(0, "TabLine", { link = "Comment" })
-vim.api.nvim_set_hl(0, "TabLineCount", { link = "Cursor", bold = true })
+vim.api.nvim_set_hl(0, "TabLineCount", { link = "PmenuSel", bold = true })
 
 local function tab_label(buf, is_current)
   local name = vim.api.nvim_buf_get_name(buf)
