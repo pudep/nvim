@@ -1,25 +1,29 @@
--- vim thing 
+-- vim thing
 -- must load first
 vim.loader.enable()
 require("vim._core.ui2").enable()
 
--- your core 
+-- your core
 require("sys")
 require("map")
 require("ui")
 
 -- main plugin file
--- must load 
+-- must load
 require("plugin")
 
 -- your local modules
 -- very small in size
 require("module")
 
--- VimEnter Stuff 
+-- VimEnter Stuff
 -- Load at last
 require("server")
 
 -- Lazy parsers
 -- priority = last
-require("treesitters.lazy") 
+require("treesitters.lazy")
+
+-- lua/lazy/
+require("lazyc.explore.oil")
+require("lazyc.explore.fzf")

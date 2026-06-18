@@ -5,48 +5,10 @@ return {
   {
     "stevearc/oil.nvim",
     lazy = true,
-    event = "BufEnter",
-    keys = {
-      { "-", "<cmd>Oil<CR>", mode = "n", desc = "Open parent directory" },
-    },
-    config = function()
-      vim.defer_fn(function()
-        require("oil").setup({
-          lsp_file_methods = {
-            enabled = false,
-          },
-          default_file_explorer = true,
-          skip_confirm_for_simple_edits = true,
-          view_options = {
-            show_hidden = true,
-          },
-        })
-      end, 50)
-    end,
   },
   {
     "ibhagwan/fzf-lua",
-    event = "BufEnter",
-    keys = {
-      { "<leader>fz", desc = "FzfLua" },
-      { "<leader>fd", desc = "Find files CWD" },
-      { "<leader>fo", desc = "Recent files" },
-      { "<leader>fc", desc = "Find config files" },
-      { "<leader>fih", desc = "Find Files in HOME" },
-      { "<leader>fir", desc = "Find Files in ROOT" },
-      { "<leader>dw", desc = "Workspace diagnostics" },
-      { "<leader>gd", desc = "Live grep CWD" },
-      { "<leader>gc", desc = "Grep config" },
-      { "<leader>gih", desc = "Grep home" },
-      { "<leader>gir", desc = "Grep root" },
-      { "<leader>ef", desc = "FZF files in typed dir" },
-      { "<leader>eg", desc = "FZF grep in typed dir" },
-    },
-    config = function()
-      vim.defer_fn(function()
-        require("tools.fzf")
-      end, 50)
-    end,
+    lazy = true,
   },
   {
     url = "https://codeberg.org/andyg/leap.nvim",
@@ -89,6 +51,7 @@ return {
   },
   {
     "mikavilpas/yazi.nvim",
+    lazy = true,
     keys = {
       {
         "<leader>od",
@@ -152,6 +115,7 @@ return {
   },
   {
     "NeogitOrg/neogit",
+    lazy = true,
     cmd = "Neogit",
     keys = {
       { "<leader>ng", "<cmd>Neogit<cr>", desc = "Neogit" },

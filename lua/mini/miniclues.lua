@@ -118,7 +118,7 @@ vim.keymap.set("n", "<Leader>bs", "<Cmd>w<CR>", { desc = "Buffer Save [Only for 
 vim.keymap.set("n", "<Leader>bc", "<Cmd>%d<CR>", { desc = "Buffer Remove data [!RISKY!]" })
 vim.keymap.set("n", "<Leader>bd", "<Cmd>bdelete<CR>", { desc = "Buffer Close [SAFE]" })
 vim.keymap.set("n", "<Leader>bb", function()
-  require("fzf-lua").buffers()
+  vim.cmd("FzfLua buffers")
 end, { desc = "Pick buffer" })
 -- ============================================
 -- GIT

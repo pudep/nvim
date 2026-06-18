@@ -68,3 +68,40 @@ vim.o.errorbells = false
 -- ================================================
 -- End
 -- ================================================
+
+-- ===========================
+-- Clipboard Setup with Smart Fallback (No Plugin)
+-- ===========================
+
+local is_termux = os.getenv("TERMUX_VERSION") ~= nil
+
+local function smart_copy_register(reg)
+  local text = vim.fn.getreg(reg)
+  
+  -- If Termux AND bytes > 6000, use termux-clipboard-set
+  if is_termux and #text > 6000 then
+    vim.fn.system("termux-clipboard-set", text)
+  else
+    -- Otherwise use Neovim's native clipboard (OSC 52)
+    vim.fn.setreg("+", text)
+  end
+end
+
+vim.keymap.set("n", "<leader>yc", function()
+  smart_copy_register('"')
+end, { desc = "Copy yank register to system clipboard" })
+
+vim.keymap.set("v", "<leader>yt", function()
+  smart_copy_register('"')
+end, { desc = "Copy visual selection to system clipboard" })
+
+vim.keymap.set("n", "<leader>ym", function()
+  -- For motion: copy operator
+  local text = vim.fn.getreg('"')
+  smart_copy_register('"')
+end, { desc = "Copy motion to system clipboard" })
+
+-- Enable Neovim's clipboard
+if not is_termux then
+  vim.opt.clipboard = "unnamedplus"  -- Desktop: use system clipboard
+end
