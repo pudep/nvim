@@ -1,2 +1,2 @@
-require("ui.statusline").setup()
+require("ui.statusline")
 require("ui.eqalizer")
