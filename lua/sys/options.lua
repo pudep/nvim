@@ -66,12 +66,8 @@ vim.o.laststatus = 3
 vim.o.visualbell = false
 vim.o.errorbells = false
 -- ================================================
--- End
+-- Clipboard (fallback for termux)
 -- ================================================
-
--- ===========================
--- Clipboard Setup with Smart Fallback (No Plugin)
--- ===========================
 
 local is_termux = os.getenv("TERMUX_VERSION") ~= nil
 
@@ -105,3 +101,9 @@ end, { desc = "Copy motion to system clipboard" })
 if not is_termux then
   vim.opt.clipboard = "unnamedplus"  -- Desktop: use system clipboard
 end
+-- ================================================
+-- Syntax
+-- ================================================
+vim.cmd("syntax off")
+vim.g.syntax_on = nil
+vim.opt.syntax = "off"
