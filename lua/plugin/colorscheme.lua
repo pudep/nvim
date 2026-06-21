@@ -20,6 +20,9 @@ return {
         dim_inactive = false,
         on_highlights = function(hl, c)
           hl.Comment = { fg = "#809ab0", italic = false }
+          hl.LineNr = { fg = "#6b7a8e"}
+          hl.LineNrAbove = { fg = "#6b7a8e"}
+          hl.LineNrBelow = { fg = "#6b7a8e"}
         end,
       })
       vim.cmd.colorscheme("tokyonight-moon")
