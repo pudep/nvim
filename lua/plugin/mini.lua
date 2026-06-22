@@ -11,11 +11,6 @@ return {
     lazy = true,
   },
   {
-    "echasnovski/mini.tabline",
-    version = "*", -- Use stable release
-    lazy = false,
-  },
-  {
     "lukas-reineke/indent-blankline.nvim",
     lazy = true,
   },

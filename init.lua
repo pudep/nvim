@@ -2,7 +2,7 @@
 -- must load first
 vim.loader.enable()
 require("vim._core.ui2").enable()
-require("startup.theme")
+require("startup")
 
 -- your core
 require("sys")
@@ -11,9 +11,9 @@ require("ui")
 
 -- main plugin file
 -- must load
-vim.defer_fn(function() 
+-- vim.defer_fn(function() 
   require("plugin")
-end, 0)
+-- end, 0)
 
 -- your local modules
 -- very small in size

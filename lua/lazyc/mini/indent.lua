@@ -23,13 +23,6 @@ local function setup_ibl()
   })
 end
 
-local function setup_mini_tabline()
-  require("mini.tabline").setup({
-    show_icons = true, -- Set false to disable icons
-    format = nil, -- Uses default format function
-  })
-end
-
 local function setup_indentscope()
   require("mini.indentscope").setup({
     symbol = "│",
@@ -46,12 +39,12 @@ local function setup_indentscope()
   vim.api.nvim_set_hl(0, "MiniIndentscopeSymbol", { link = "NonText" })
 end
 
+
 vim.api.nvim_create_autocmd("VimEnter", {
   once = true,
   callback = function()
-    vim.defer_fn(function ()
-      setup_mini_tabline()
-      setup_ibl() 
+    vim.defer_fn(function()
+      setup_ibl()
       setup_indentscope()
     end, 50)
   end,
