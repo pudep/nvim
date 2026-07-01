@@ -11,13 +11,9 @@ require("map")
 require("ui")
 
 -- main plugin file
--- must load
--- vim.defer_fn(function() 
-  require("plugin")
--- end, 0)
+require("plugin")
 
 -- your local modules
--- very small in size
 require("module")
 
 -- VimEnter Stuff
@@ -30,7 +26,6 @@ require("lazyc.mini.tabline_motion")
 require("treesitters.lazy")
 
 -- lua/lazy/
--- require("lazyc.mini.icons")
 require("lazyc.explore.oil")
 require("lazyc.explore.fzf")
 require("lazyc.mini.miniclues")
