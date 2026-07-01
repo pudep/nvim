@@ -1,3 +1,4 @@
+require("map.qol_motion")
 require("map.sensitive")
 require("map.az")
 require("map.cozy")
